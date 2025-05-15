@@ -35,8 +35,10 @@
 <br>
 
 ## 배포
-AWS EC2 이용.
-http://ec2-3-34-94-55.ap-northeast-2.compute.amazonaws.com:8080/
+AWS EC2 이용.<br>
+ex) http://ec2-3-34-94-55.ap-northeast-2.compute.amazonaws.com:8080/api/user/register
+<br>
+*하기의 API 명세서를 참고하여 요청 실행.
 
 ## 💻 기술 스택
 
