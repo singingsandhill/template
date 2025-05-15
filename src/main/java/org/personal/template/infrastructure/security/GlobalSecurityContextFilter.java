@@ -1,6 +1,7 @@
 package org.personal.template.infrastructure.security;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import org.personal.template.domain.entity.User;
 import org.personal.template.domain.repository.UserRepository;
@@ -106,18 +107,34 @@ public class GlobalSecurityContextFilter extends OncePerRequestFilter {
 		}
 	}
 
-	private void setAuthentication(String username) {
-		// 1) DB에서 User 엔티티 조회
-		User user = userRepository.findByUsername(username);
-		// 2) User -> UserDetailsImpl 변환
-		UserDetailsImpl userDetails = new UserDetailsImpl(user);
-		// 3) Authentication 객체에 authorities로 getAuthorities() 사용
-		Authentication auth = new UsernamePasswordAuthenticationToken(
-			userDetails,
-			null,
-			userDetails.getAuthorities()
-		);
-		SecurityContextHolder.getContext().setAuthentication(auth);
+	private void setAuthentication(String email) {
+		try {
+			// 1) DB에서 User 엔티티 조회
+			Optional<User> userOpt = userRepository.findByEmail(email);
+
+			if (userOpt.isEmpty()) {
+				log.error("User not found for email: {}", email);
+				throw new BaseException(Code.SIGN001, "해당 이메일의 사용자를 찾을 수 없습니다: " + email);
+			}
+
+			User user = userOpt.get();
+			log.info("User found: {}", user.getUsername());
+
+			// 2) User -> UserDetailsImpl 변환
+			UserDetailsImpl userDetails = new UserDetailsImpl(user);
+
+			// 3) Authentication 객체에 authorities로 getAuthorities() 사용
+			Authentication auth = new UsernamePasswordAuthenticationToken(
+				userDetails,
+				null,
+				userDetails.getAuthorities()
+			);
+
+			SecurityContextHolder.getContext().setAuthentication(auth);
+		} catch (Exception e) {
+			log.error("Error setting authentication: {}", e.getMessage(), e);
+			throw e;
+		}
 	}
 
 	@Override

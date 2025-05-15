@@ -53,18 +53,25 @@ public class GlobalSecurityConfig {
 			.formLogin(formLogin -> formLogin.disable())  // 로그인 페이지 비활성화
 			.httpBasic(httpBasic -> httpBasic.disable())  // HTTP 기본 인증 비활성화
 			.logout(logout -> logout.disable())  // 로그아웃 기능 비활성화
-			.exceptionHandling(exception -> exception
-				.authenticationEntryPoint((request, response, authException) ->
-					response.sendError(HttpServletResponse.SC_UNAUTHORIZED))  // 인증 실패 시 401 반환
+
+			.anonymous(an -> an.disable())
+
+			.exceptionHandling(exc -> exc
+				// 인증 없을 땐 401
+				.authenticationEntryPoint((req, res, ex) ->
+					res.sendError(HttpServletResponse.SC_UNAUTHORIZED))
+				// 권한 부족일 땐 403
+				.accessDeniedHandler((req, res, ex) ->
+					res.sendError(HttpServletResponse.SC_FORBIDDEN))
 			)
 
 			// URL 권한 설정
 			.authorizeHttpRequests(auth -> auth
 				// Swagger UI 접근 허용
-				.requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**","/docs/**").permitAll()
+				.requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**", "/docs/**").permitAll()
 				// 로그인 및 회원가입 접근 허용
 				.requestMatchers("/api/user/login", "/api/user/register", "/api/user/register/admin").permitAll()
-				.requestMatchers("/api/admin/page").hasRole("ADMIN")
+				.requestMatchers("/api/admin/**").hasRole("ADMIN")
 				.anyRequest().authenticated())
 
 			.sessionManagement(session -> session

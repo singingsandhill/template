@@ -10,6 +10,7 @@ import org.personal.template.presentation.dto.LoginRequestDTO;
 import org.personal.template.presentation.dto.RegisterAdminRequestDTO;
 import org.personal.template.presentation.dto.RegisterRequestDTO;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -62,7 +63,9 @@ public class UserController {
 	)
 	public ResponseEntity<?> login(@Valid @RequestBody LoginRequestDTO requestDTO) {
 		Map<String, Object> result = userService.login(requestDTO);
-		return ResponseEntity.ok(ApiResponseData.success(result, "로그인 성공"));
+		return ResponseEntity.ok()
+			.contentType(MediaType.APPLICATION_JSON)
+			.body(ApiResponseData.success(result, "로그인 성공"));
 	}
 
 	@PostMapping("/register")
@@ -89,7 +92,7 @@ public class UserController {
 		})
 	public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterRequestDTO requestDTO) {
 		userService.registerUser(requestDTO, Role.ROLE_USER);
-		return ResponseEntity.ok(ApiResponseData.success("회원가입 성공"));
+		return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(ApiResponseData.success("회원가입 성공"));
 	}
 
 	@PostMapping("/register/admin")
@@ -119,7 +122,7 @@ public class UserController {
 	)
 	public ResponseEntity<?> registerAdmin(@Valid @RequestBody RegisterAdminRequestDTO requestDTO) {
 		User user = userService.registerAdmin(requestDTO, Role.ROLE_ADMIN);
-		return ResponseEntity.status(HttpStatus.CREATED)
+		return ResponseEntity.status(HttpStatus.CREATED).contentType(MediaType.APPLICATION_JSON)
 			.body(ApiResponseData.success("관리자 회원가입 성공"));
 	}
 }
