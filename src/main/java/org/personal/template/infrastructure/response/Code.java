@@ -36,7 +36,8 @@ public enum Code {
 	SIGN002(HttpStatus.BAD_REQUEST,2002,"비밀번호 불일치"),
 	SIGN003(HttpStatus.BAD_REQUEST,2003,"이미 등록된 이메일"),
 	SIGN004(HttpStatus.BAD_REQUEST,2004,"이미 등록된 사용자 이름"),
-	SIGN005(HttpStatus.BAD_REQUEST,2005,"유효하지 않은 회원가입 정보")
+	SIGN005(HttpStatus.BAD_REQUEST,2005,"유효하지 않은 회원가입 정보"),
+	SIGN006(HttpStatus.BAD_REQUEST,2006,"유효하지 않은 관리자 코드"),
 
 
 	;
