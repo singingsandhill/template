@@ -236,3 +236,69 @@ JUnit과 Mockito를 사용하여 API 엔드포인트에 대한 단위 테스트 
   - 기타 모든 엔드포인트: 인증 필요
 
 <br>
+
+---
+---
+---
+
+# 구현 요구사항 체크리스트
+## 1. 사용자 인증 시스템 및 JWT 기반 인증 구현
+- [x] 회원가입 API (/api/user/register, /api/user/register/admin)
+- [x] 로그인 API (/api/user/login)
+- [x] JWT 토큰 발급 및 검증 (JWTUtil.java, JwtAuthenticationFilter.java, GlobalSecurityContextFilter.java)
+- [x] 역할 기반 접근 제어 (ROLE_USER, ROLE_ADMIN 구분)
+
+## 2. JUnit 테스트 코드
+- [x] API 엔드포인트 테스트 (UserControllerAPITest.java, AdminControllerAPITest.java)
+- [x] 올바른 입력과 잘못된 입력에 대한 테스트 케이스 구현
+
+## 3. Swagger로 API 문서화
+- [x] Swagger 설정 (SwaggerConfig.java)
+- [x] API 엔드포인트, 요청/응답 구조, 상태 코드 문서화
+- [x] /docs URL로 접근 가능하도록 구성 (application.properties에 설정됨)
+
+## 4. 기타 요구사항
+- [x] 서버 주소와 포트는 기본값(0.0.0.0:8080) 사용
+- [x] API 응답은 적절한 HTTP 상태 코드와 함께 application/json 형식
+- [x] 데이터는 메모리 내에서 처리 (InMemoryUserRepository.java)
+
+# 기능 상세 설명
+## 1. 사용자 인증 시스템
+프로젝트는 다음과 같은 기능을 제공합니다:
+ - 회원가입:
+      - 일반 사용자: /api/user/register
+      - 관리자: /api/user/register/admin (관리자 코드 필요)
+
+- 로그인:
+      - /api/user/login을 통해 이메일/비밀번호 기반 인증
+      - 성공 시 JWT 토큰 발급
+
+- 권한 기반 API 접근 제어:
+      - 관리자 전용 API(/api/admin/**)는 ROLE_ADMIN 권한 필요
+      - Security 설정을 통한 URL 경로 별 접근 권한 설정
+
+## 2. JWT 인증 메커니즘
+- JWTUtil.java: 토큰 생성, 검증, 파싱 등 담당
+- JwtAuthenticationFilter.java: 로그인 요청 처리 및 토큰 발급
+- GlobalSecurityContextFilter.java: 요청 헤더에서 토큰 추출 및 인증 설정
+
+## 3. 테스트 코드
+- 유저 컨트롤러 테스트(UserControllerAPITest.java):
+      - 회원가입 성공/실패 케이스
+      - 로그인 성공/실패 케이스
+      - 관리자 회원가입 테스트
+
+- 관리자 컨트롤러 테스트(AdminControllerAPITest.java):
+      - 관리자의 사용자 조회 API 테스트
+      - 권한 없는 사용자의 관리자 API 접근 제한 테스트
+
+## 4. API 문서화
+- Swagger UI 설정을 통해 API 문서 자동 생성
+- 각 API에 대한 설명, 요청/응답 예시 등 제공
+- /docs 경로로 접근 가능
+
+## 기타 특징
+- 사용자 데이터는 인메모리 저장소(InMemoryUserRepository.java)를 통해 관리
+- 전역 예외 처리(GlobalExceptionHandler.java)로 일관된 에러 응답 형식 제공
+- 보안 설정(GlobalSecurityConfig.java)을 통한 엔드포인트 보호
+
