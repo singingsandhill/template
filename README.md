@@ -16,14 +16,15 @@
 
 ## 📋 목차
 
-- [프로젝트 개요](#프로젝트-개요)
-- [기술 스택](#기술-스택)
-- [프로젝트 구조](#프로젝트-구조)
-- [주요 기능](#주요-기능)
-- [환경 설정](#환경-설정)
-- [API 명세](#api-명세)
-- [테스트](#테스트)
-- [보안 설정](#보안-설정)
+- [프로젝트 개요](##프로젝트-개요)
+- [배포](##배포)
+- [기술 스택](##기술-스택)
+- [프로젝트 구조](##프로젝트-구조)
+- [주요 기능](##주요-기능)
+- [환경 설정](##환경-설정)
+- [API 명세](##API 명세서)
+- [테스트](##테스트)
+- [보안 설정](##보안-설정)
 
 <br>
 
@@ -32,6 +33,10 @@
 이 프로젝트는 Spring Boot 기반의 JWT 인증 시스템 템플릿입니다. 사용자 등록, 로그인, 권한 기반 접근 제어 등의 기능을 제공하며, 메모리 내에서 데이터를 처리합니다. JUnit 테스트와 Swagger를 통한 API 문서화도 포함하고 있습니다.
 
 <br>
+
+## 배포
+AWS EC2 이용.
+http://ec2-3-34-94-55.ap-northeast-2.compute.amazonaws.com:8080/
 
 ## 💻 기술 스택
 
@@ -178,13 +183,18 @@ SPRING_JWT_SECRET=your_jwt_secret_key_should_be_at_least_256_bits_long_for_secur
 
 ### 4. API 문서 접근
 
-Swagger UI는 다음 URL로 접근할 수 있습니다:
+실행시 Swagger UI는 다음 URL로 접근할 수 있습니다:
 
 ```
 http://localhost:8080/docs
 ```
 
 <br>
+
+## API 명세서
+<a href="http://ec2-3-34-94-55.ap-northeast-2.compute.amazonaws.com:8080/swagger-ui/index.htm">EC2로 배포된 Swagge 문서</a> <br>
+or <br>
+http://ec2-3-34-94-55.ap-northeast-2.compute.amazonaws.com:8080/docs
 
 ## 🧪 테스트
 
